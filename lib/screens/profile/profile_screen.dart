@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../account_setting/account_setting_screen.dart';
+import '../help_support/help_support_screen.dart';
+
 class ProfileScreen extends StatelessWidget {
   static String routeName = "/profile";
 
@@ -69,25 +72,7 @@ class ProfileScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                const SizedBox(height: 30),
-                // Tombol Edit Profil
-                // ElevatedButton(
-                //   onPressed: () {
-                //     // Aksi saat tombol Edit Profil ditekan
-                //   },
-                //   style: ElevatedButton.styleFrom(
-                //     padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
-                //     backgroundColor: Colors.green[700],
-                //     shape: RoundedRectangleBorder(
-                //       borderRadius: BorderRadius.circular(30),
-                //     ),
-                //   ),
-                //   child: const Text(
-                //     "Edit Profil",
-                //     style: TextStyle(fontSize: 18),
-                //   ),
-                // ),
-                const SizedBox(height: 30),
+                const SizedBox(height: 60),
                 // Bagian menu lainnya
                 Container(
                   decoration: BoxDecoration(
@@ -123,8 +108,15 @@ class ProfileScreen extends StatelessWidget {
                         trailing: const Icon(Icons.arrow_forward_ios),
                         onTap: () {
                           // Navigasi ke halaman pengaturan akun
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const AccountSettingsScreen(),
+                            ),
+                          );
                         },
                       ),
+
                       const Divider(),
                       // Bantuan & Dukungan
                       ListTile(
@@ -132,7 +124,12 @@ class ProfileScreen extends StatelessWidget {
                         title: const Text("Bantuan & Dukungan"),
                         trailing: const Icon(Icons.arrow_forward_ios),
                         onTap: () {
-                          // Navigasi ke halaman bantuan & dukungan
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const HelpSupportScreen(),
+                            ),
+                          );
                         },
                       ),
                     ],
