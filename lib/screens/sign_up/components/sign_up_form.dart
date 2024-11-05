@@ -18,6 +18,8 @@ class _SignUpFormState extends State<SignUpForm> {
   String? password;
   String? conform_password;
   bool remember = false;
+  bool _isPasswordVisible = false; // State untuk visibilitas password
+  bool _isConfirmPasswordVisible = false; // State untuk visibilitas konfirmasi password
   final List<String?> errors = [];
 
   void addError({String? error}) {
@@ -66,15 +68,13 @@ class _SignUpFormState extends State<SignUpForm> {
             decoration: const InputDecoration(
               labelText: "Email",
               hintText: "Enter your email",
-              // If  you are using latest version of flutter then lable text and hint text shown like this
-              // if you r using flutter less then 1.20.* then maybe this is not working properly
               floatingLabelBehavior: FloatingLabelBehavior.always,
               suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/Mail.svg"),
             ),
           ),
           const SizedBox(height: 20),
           TextFormField(
-            obscureText: true,
+            obscureText: !_isPasswordVisible, // Kontrol visibilitas password
             onSaved: (newValue) => password = newValue,
             onChanged: (value) {
               if (value.isNotEmpty) {
@@ -94,18 +94,25 @@ class _SignUpFormState extends State<SignUpForm> {
               }
               return null;
             },
-            decoration: const InputDecoration(
+            decoration: InputDecoration(
               labelText: "Password",
               hintText: "Enter your password",
-              // If  you are using latest version of flutter then lable text and hint text shown like this
-              // if you r using flutter less then 1.20.* then maybe this is not working properly
               floatingLabelBehavior: FloatingLabelBehavior.always,
-              suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/Lock.svg"),
+              suffixIcon: IconButton(
+                icon: Icon(
+                  _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                ),
+                onPressed: () {
+                  setState(() {
+                    _isPasswordVisible = !_isPasswordVisible;
+                  });
+                },
+              ),
             ),
           ),
           const SizedBox(height: 20),
           TextFormField(
-            obscureText: true,
+            obscureText: !_isConfirmPasswordVisible, // Kontrol visibilitas konfirmasi password
             onSaved: (newValue) => conform_password = newValue,
             onChanged: (value) {
               if (value.isNotEmpty) {
@@ -125,13 +132,20 @@ class _SignUpFormState extends State<SignUpForm> {
               }
               return null;
             },
-            decoration: const InputDecoration(
+            decoration: InputDecoration(
               labelText: "Confirm Password",
               hintText: "Re-enter your password",
-              // If  you are using latest version of flutter then lable text and hint text shown like this
-              // if you r using flutter less then 1.20.* then maybe this is not working properly
               floatingLabelBehavior: FloatingLabelBehavior.always,
-              suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/Lock.svg"),
+              suffixIcon: IconButton(
+                icon: Icon(
+                  _isConfirmPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                ),
+                onPressed: () {
+                  setState(() {
+                    _isConfirmPasswordVisible = !_isConfirmPasswordVisible;
+                  });
+                },
+              ),
             ),
           ),
           FormError(errors: errors),
@@ -140,10 +154,13 @@ class _SignUpFormState extends State<SignUpForm> {
             onPressed: () {
               if (_formKey.currentState!.validate()) {
                 _formKey.currentState!.save();
-                // if all are valid then go to success screen
+                // Jika semua valid, lanjut ke screen berikutnya
                 Navigator.pushNamed(context, CompleteProfileScreen.routeName);
               }
             },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFF142f47),
+            ),
             child: const Text("Continue"),
           ),
         ],

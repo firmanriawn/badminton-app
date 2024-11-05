@@ -19,6 +19,7 @@ class _SignFormState extends State<SignForm> {
   String? email;
   String? password;
   bool? remember = false;
+  bool _isPasswordVisible = false; // State untuk melihat password
   final List<String?> errors = [];
 
   void addError({String? error}) {
@@ -67,15 +68,13 @@ class _SignFormState extends State<SignForm> {
             decoration: const InputDecoration(
               labelText: "Email",
               hintText: "Masukkan email mu",
-              // If  you are using latest version of flutter then lable text and hint text shown like this
-              // if you r using flutter less then 1.20.* then maybe this is not working properly
               floatingLabelBehavior: FloatingLabelBehavior.always,
               suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/Mail.svg"),
             ),
           ),
           const SizedBox(height: 20),
           TextFormField(
-            obscureText: true,
+            obscureText: !_isPasswordVisible, // Kondisi untuk melihat password
             onSaved: (newValue) => password = newValue,
             onChanged: (value) {
               if (value.isNotEmpty) {
@@ -95,49 +94,33 @@ class _SignFormState extends State<SignForm> {
               }
               return null;
             },
-            decoration: const InputDecoration(
+            decoration: InputDecoration(
               labelText: "Password",
               hintText: "Masukkan password mu",
-              // If  you are using latest version of flutter then lable text and hint text shown like this
-              // if you r using flutter less then 1.20.* then maybe this is not working properly
               floatingLabelBehavior: FloatingLabelBehavior.always,
-              suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/Lock.svg"),
+              suffixIcon: IconButton(
+                icon: Icon(
+                  _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                ),
+                onPressed: () {
+                  setState(() {
+                    _isPasswordVisible = !_isPasswordVisible;
+                  });
+                },
+              ),
             ),
           ),
           const SizedBox(height: 20),
-          // Row(
-          //   children: [
-          //     Checkbox(
-          //       value: remember,
-          //       activeColor: kPrimaryColor,
-          //       onChanged: (value) {
-          //         setState(() {
-          //           remember = value;
-          //         });
-          //       },
-          //     ),
-          //     // const Text("Remember me"),
-          //     // const Spacer(),
-          //     // GestureDetector(
-          //     //   onTap: () => Navigator.pushNamed(
-          //     //       context, ForgotPasswordScreen.routeName),
-          //     //   child: const Text(
-          //     //     "Forgot Password",
-          //     //     style: TextStyle(decoration: TextDecoration.underline),
-          //     //   ),
-          //     // )
-          //   ],
-          // ),
           FormError(errors: errors),
           const SizedBox(height: 16),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF142f47), // Mengubah warna tombol
+              backgroundColor: const Color(0xFF142f47),
             ),
             onPressed: () {
               if (_formKey.currentState!.validate()) {
                 _formKey.currentState!.save();
-                // jika semua valid, pergi ke layar sukses
+                // Jika semua valid, pergi ke layar sukses
                 KeyboardUtil.hideKeyboard(context);
                 Navigator.pushNamed(context, LoginSuccessScreen.routeName);
               }

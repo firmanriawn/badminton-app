@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:shop_app/screens/sign_in/sign_in_screen.dart';
 
 import '../../../components/custom_surfix_icon.dart';
 import '../../../components/form_error.dart';
+import '../../../components/popup_widget.dart';
 import '../../../constants.dart';
-import '../../otp/otp_screen.dart';
 
 class CompleteProfileForm extends StatefulWidget {
   const CompleteProfileForm({super.key});
@@ -34,6 +35,17 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
         errors.remove(error);
       });
     }
+  }
+
+  void _showPopup(BuildContext context) {
+    final overlay = Overlay.of(context);
+    final overlayEntry = OverlayEntry(
+      builder: (context) => const PopupWidget(message: "Berhasil Melakukan Registrasi"),
+    );
+    overlay.insert(overlayEntry);
+
+    // Pop-up akan hilang setelah 2 detik
+    Future.delayed(const Duration(seconds: 2), overlayEntry.remove);
   }
 
   @override
@@ -135,9 +147,13 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
           ElevatedButton(
             onPressed: () {
               if (_formKey.currentState!.validate()) {
-                Navigator.pushNamed(context, OtpScreen.routeName);
+                Navigator.pushNamed(context, SignInScreen.routeName);
+                _showPopup(context);  // Tampilkan pop-up setelah berpindah halaman
               }
             },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFF142f47),
+            ),
             child: const Text("Continue"),
           ),
         ],

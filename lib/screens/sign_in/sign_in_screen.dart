@@ -12,7 +12,8 @@ class SignInScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Sign In"),
+        automaticallyImplyLeading: false, // Hapus tombol back
+        title: const Text(""),
       ),
       body: SafeArea(
         child: SizedBox(
